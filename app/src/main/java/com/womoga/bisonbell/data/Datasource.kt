@@ -18,15 +18,18 @@ class Datasource {
             Race(Race.Discpline.ROAD_WOMENS,
                 "UAE Tour",
                 toInstant(2024, 2, 8),
-                toInstant(2024, 2, 11)),
+                toInstant(2024, 3, 11),
+                listOf(Race.Platform.Discovery)),
             Race(Race.Discpline.ROAD_MENS,
                 "Figueira Champions Classic",
                 toInstant(2024, 2, 10),
-                toInstant(2024, 2, 10)),
+                toInstant(2024, 2, 10),
+                listOf(Race.Platform.Discovery)),
             Race(Race.Discpline.ROAD_MENS,
                 "Vuelta A Murcia",
                 toInstant(2024, 2, 10),
-                toInstant(2024, 2, 10))
+                toInstant(2024, 2, 10),
+                listOf(Race.Platform.Discovery))
         )
     }
 }
