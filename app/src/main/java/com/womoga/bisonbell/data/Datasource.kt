@@ -1,4 +1,6 @@
 package com.womoga.bisonbell.data
+import android.content.ContentResolver
+import android.net.Uri
 import com.womoga.bisonbell.model.Race
 import java.time.Instant
 import java.util.Calendar
@@ -11,21 +13,25 @@ class Datasource {
         c1.set(Calendar.YEAR, year);
         c1.set(Calendar.MONTH, month);
         c1.set(Calendar.DAY_OF_MONTH, day);
-        return c1.getTime().toInstant();
+        return c1.getTime().toInstant()
     }
-    fun loadRaces(): List<Race> {
+
+    fun loadRaces(contentResolver: ContentResolver): List<Race> {
+        //uri = ""
+        //val text = contentResolver.openInputStream(uri)!!.bufferedReader().use {it.readText() }
+
         return listOf<Race>(
-            Race(Race.Discpline.ROAD_WOMENS,
+            Race(Race.Discipline.ROAD_WOMENS,
                 "UAE Tour",
                 toInstant(2024, 2, 8),
                 toInstant(2024, 3, 11),
                 listOf(Race.Platform.Discovery)),
-            Race(Race.Discpline.ROAD_MENS,
+            Race(Race.Discipline.ROAD_MENS,
                 "Figueira Champions Classic",
                 toInstant(2024, 2, 10),
                 toInstant(2024, 2, 10),
                 listOf(Race.Platform.Discovery)),
-            Race(Race.Discpline.ROAD_MENS,
+            Race(Race.Discipline.ROAD_MENS,
                 "Vuelta A Murcia",
                 toInstant(2024, 2, 10),
                 toInstant(2024, 2, 10),

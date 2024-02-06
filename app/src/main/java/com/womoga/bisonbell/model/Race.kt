@@ -4,13 +4,13 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 data class Race(
-    val discipline: Discpline,
+    val discipline: Discipline,
     val name: String,
     val firstDay: Instant,
     val lastDay: Instant,
     val platform: List<Platform>
 ) {
-    enum class Discpline {
+    enum class Discipline {
         ROAD_MENS,
         ROAD_WOMENS,
         CYCLOCROSS_MENS,
@@ -30,5 +30,25 @@ data class Race(
             )
         }
         return raceDays.toList()
+    }
+
+    companion object {
+        fun toString(discipline: Discipline): String {
+            return when (discipline) {
+                Race.Discipline.CYCLOCROSS_MENS -> "Cyclocross (M)"
+                Race.Discipline.CYCLOCROSS_MENS -> "Cyclocross (W)"
+                Race.Discipline.ROAD_MENS -> "Road (M)"
+                Race.Discipline.ROAD_WOMENS -> "Road(W)"
+                else -> "Unknown"
+            }
+        }
+
+        fun toString(platform: Platform): String {
+            return when (platform) {
+                Race.Platform.Discovery -> "D"
+                Race.Platform.Peacock -> "P"
+                else -> "Unknown"
+            }
+        }
     }
 }
