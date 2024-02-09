@@ -1,1 +1,17 @@
-{}
+{
+  "discovery": {
+    "cyclocross men": {
+      "Cyclocross - Superprestige Middlekerke": "10 FEB"
+    },
+    "cyclocross women": {
+      "Cyclocross - Superprestige Middlekerke": "10 FEB"
+    },
+    "road men": {
+      "Figueira Champions Classic": "10 FEB",
+      "Vuelta A Murcia": "10 FEB"
+    },
+    "road women": {
+      "UAE Tour Women":"08 FEB - 11 FEB"
+    }
+  }
+}
