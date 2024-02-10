@@ -94,21 +94,6 @@ fun RaceApp() {
         raceList = races
     )
 }
-/*    runBlocking {
-        val result = withContext(Dispatchers.IO) { Datasource().fetchRaces(); }
-        when(result) {
-            is Result.Success<RaceYear> -> {
-                RaceList(
-                    raceList = result.data.getRaceDays(Month.FEBRUARY)
-                )
-            }
-
-            else -> {}
-        }
-    }*/
-/*    RaceList(
-        raceList = races.[3];
-    )*/
 
 @Composable
 fun RaceList(raceList: List<RaceDay>, modifier: Modifier = Modifier) {
