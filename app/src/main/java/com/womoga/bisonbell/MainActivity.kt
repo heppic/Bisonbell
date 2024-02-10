@@ -2,6 +2,7 @@ package com.womoga.bisonbell
 
 import android.content.ContentResolver
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -15,11 +16,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,15 +36,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.womoga.bisonbell.data.Datasource
+import com.womoga.bisonbell.data.Result
 import com.womoga.bisonbell.model.Race
 import com.womoga.bisonbell.model.RaceDay
+import com.womoga.bisonbell.model.RaceYear
 import com.womoga.bisonbell.ui.theme.BisonbellTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.Month
 import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
+import java.util.LinkedList
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +65,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    RaceApp(this.contentResolver)
+                    RaceApp()
                 }
             }
         }
@@ -56,19 +74,41 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun RaceApp(contentResolver: ContentResolver) {
-    val races = Datasource().loadNetRaces();
-/*    val races = Datasource().loadRaces(contentResolver);
-    val days = ArrayList<RaceDay>()
-    for (r in races) {
-        for (d in r.raceDays()) {
-            days.add(d)
+fun RaceApp() {
+    val races = remember { mutableStateListOf<RaceDay>() }
+    runBlocking {
+        launch {
+            val result = withContext(Dispatchers.IO) { Datasource().fetchRaces() }
+            when (result) {
+                is Result.Success<RaceYear> -> {
+                    Log.v("WORM", result.data.toString())
+                    races.addAll(result.data.getRaceDays(Month.FEBRUARY))
+
+                }
+
+                else -> {}
+            }
         }
-    }*/
+    }
     RaceList(
-        raceList = races.[3];
+        raceList = races
     )
 }
+/*    runBlocking {
+        val result = withContext(Dispatchers.IO) { Datasource().fetchRaces(); }
+        when(result) {
+            is Result.Success<RaceYear> -> {
+                RaceList(
+                    raceList = result.data.getRaceDays(Month.FEBRUARY)
+                )
+            }
+
+            else -> {}
+        }
+    }*/
+/*    RaceList(
+        raceList = races.[3];
+    )*/
 
 @Composable
 fun RaceList(raceList: List<RaceDay>, modifier: Modifier = Modifier) {
@@ -87,8 +127,7 @@ fun RaceList(raceList: List<RaceDay>, modifier: Modifier = Modifier) {
 
 @Composable
 fun LeftColumn(race: RaceDay, modifier: Modifier = Modifier){
-    val zid = ZoneId.systemDefault()
-    val zdt = race.date.atZone(zid)
+    val zdt = race.start.atOffset(ZoneOffset.UTC)
     val dayOfMonth = zdt.dayOfMonth
     Box(
         modifier = modifier
@@ -222,14 +261,14 @@ fun RaceCard(race: RaceDay, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun RaceCardPreview() {
-    var races = listOf<Race> (
+    var races = listOf<Race>(
         Race(
             Race.Discipline.ROAD_WOMENS,
             "UAE Tour",
             Instant.now(),
             Instant.now(),
             listOf(Race.Platform.Discovery)
-            ),
+        ),
         Race(
             Race.Discipline.ROAD_MENS,
             "UAE Tour M",
@@ -247,6 +286,7 @@ private fun RaceCardPreview() {
     }
 
     RaceList(days.toList())
+}
     /*RaceList(listOf(
         RaceDay(
             Race.Discpline.ROAD_WOMENS,
@@ -279,4 +319,3 @@ private fun RaceCardPreview() {
             listOf(Race.Platform.Peacock)
         )
         ))*/
-}
