@@ -1,5 +1,6 @@
 package com.womoga.bisonbell
 
+import android.content.ContentResolver
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,6 +30,9 @@ import com.womoga.bisonbell.data.Datasource
 import com.womoga.bisonbell.model.Race
 import com.womoga.bisonbell.model.RaceDay
 import com.womoga.bisonbell.ui.theme.BisonbellTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
@@ -43,24 +47,26 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    RaceApp()
+                    RaceApp(this.contentResolver)
                 }
             }
         }
     }
 }
 
+
 @Composable
-fun RaceApp() {
-    val races = Datasource().loadRaces()
+fun RaceApp(contentResolver: ContentResolver) {
+    val races = Datasource().loadNetRaces();
+/*    val races = Datasource().loadRaces(contentResolver);
     val days = ArrayList<RaceDay>()
     for (r in races) {
         for (d in r.raceDays()) {
             days.add(d)
         }
-    }
+    }*/
     RaceList(
-        raceList = days
+        raceList = races.[3];
     )
 }
 
@@ -240,7 +246,7 @@ private fun RaceCardPreview() {
         }
     }
 
-    RaceList(days)
+    RaceList(days.toList())
     /*RaceList(listOf(
         RaceDay(
             Race.Discpline.ROAD_WOMENS,
