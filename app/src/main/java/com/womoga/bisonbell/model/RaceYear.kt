@@ -7,6 +7,11 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.LinkedList
 
+data class RaceMonth(
+    val name: String,
+    val days: List<RaceDay>
+)
+
 class RaceYear {
     private val schedule = HashMap<Month, LinkedList<RaceDay>>();
 

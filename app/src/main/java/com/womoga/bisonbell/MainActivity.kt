@@ -14,10 +14,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +35,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +43,7 @@ import com.womoga.bisonbell.data.Datasource
 import com.womoga.bisonbell.data.Result
 import com.womoga.bisonbell.model.Race
 import com.womoga.bisonbell.model.RaceDay
+import com.womoga.bisonbell.model.RaceMonth
 import com.womoga.bisonbell.model.RaceYear
 import com.womoga.bisonbell.ui.theme.BisonbellTheme
 import kotlinx.coroutines.CoroutineScope
@@ -65,7 +70,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    RaceApp()
+                    RaceApp(Modifier)
                 }
             }
         }
@@ -74,26 +79,26 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun RaceApp() {
-    val jan = remember { mutableStateListOf<RaceDay>() }
-    val feb = remember { mutableStateListOf<RaceDay>() }
-    val mar = remember { mutableStateListOf<RaceDay>() }
-    val apr = remember { mutableStateListOf<RaceDay>() }
+fun RaceApp(modifier: Modifier) {
+    val schedule = remember { mutableStateListOf<RaceMonth>()}
     runBlocking {
         launch {
             val result = withContext(Dispatchers.IO) { Datasource().fetchRaces() }
             when (result) {
                 is Result.Success<RaceYear> -> {
-                    Log.v("WORM", result.data.toString())
-                    jan.clear()
-                    jan.addAll(result.data.getRaceDays(Month.JANUARY))
-                    feb.clear()
-                    feb.addAll(result.data.getRaceDays(Month.FEBRUARY))
-                    mar.clear()
-                    mar.addAll(result.data.getRaceDays(Month.MARCH))
-                    apr.clear()
-                    apr.addAll(result.data.getRaceDays(Month.APRIL))
-
+                    schedule.clear()
+                    schedule.add(RaceMonth("January", result.data.getRaceDays(Month.JANUARY)))
+                    schedule.add(RaceMonth("February", result.data.getRaceDays(Month.FEBRUARY)))
+                    schedule.add(RaceMonth("March", result.data.getRaceDays(Month.MARCH)))
+                    schedule.add(RaceMonth("April", result.data.getRaceDays(Month.APRIL)))
+                    schedule.add(RaceMonth("May", result.data.getRaceDays(Month.MAY)))
+                    schedule.add(RaceMonth("June", result.data.getRaceDays(Month.JUNE)))
+                    schedule.add(RaceMonth("July", result.data.getRaceDays(Month.JULY)))
+                    schedule.add(RaceMonth("August", result.data.getRaceDays(Month.AUGUST)))
+                    schedule.add(RaceMonth("September", result.data.getRaceDays(Month.SEPTEMBER)))
+                    schedule.add(RaceMonth("October", result.data.getRaceDays(Month.OCTOBER)))
+                    schedule.add(RaceMonth("November", result.data.getRaceDays(Month.NOVEMBER)))
+                    schedule.add(RaceMonth("December", result.data.getRaceDays(Month.DECEMBER)))
                 }
 
                 else -> {}
@@ -101,38 +106,27 @@ fun RaceApp() {
         }
     }
 
-    Column() {
-        Text("January")
-        RaceList(
-            raceList = jan
-        )
-        Text("February")
-        RaceList(
-            raceList = feb
-        )
-        Text("March")
-        RaceList(
-            raceList = mar
-        )
-        Text("April")
-        RaceList(
-            raceList = apr
-        )
+    LazyColumn(
+        modifier = modifier) {
+        items(items = schedule) { month ->
+            RaceList(month.name, month.days)
+        }
     }
 }
 
 @Composable
-fun RaceList(raceList: List<RaceDay>, modifier: Modifier = Modifier) {
-    LazyColumn(
+fun RaceList(name: String, raceList: List<RaceDay>, modifier: Modifier = Modifier) {
+    Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier) {
-        items(items = raceList) { race ->
+        Text(name)
+        raceList.forEach({race ->
             RaceCard(
                 race = race,
                 modifier = modifier
                     .fillMaxHeight(1.0f)
             )
-        }
+        })
     }
 }
 
@@ -296,7 +290,7 @@ private fun RaceCardPreview() {
         }
     }
 
-    RaceList(days.toList())
+    RaceList("tesT", days.toList())
 }
     /*RaceList(listOf(
         RaceDay(

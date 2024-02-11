@@ -45,13 +45,10 @@ class Datasource {
             requestMethod = "GET"
             val text = BufferedReader(InputStreamReader(inputStream)).lines().collect(
                 Collectors.joining())
-            Log.v("WORM", text)
             val raceYear = RaceYear()
             try {
                 val json = JSONObject(text)
-                Log.v("WORM", "JSON: "+json.toString())
                 for (platform_string in json.keys()) {
-                    Log.v("WORM", platform_string)
                     val discipline_tier = json.getJSONObject(platform_string)
                     for (discipline_string in discipline_tier.keys()) {
                         val race_tier = discipline_tier.getJSONObject(discipline_string)

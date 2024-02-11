@@ -1,17 +1,35 @@
 {
   "discovery": {
     "cyclocross men": {
-      "Cyclocross - Superprestige Middlekerke": "10 FEB"
+      "Superprestige Middlekerke": "10 FEB",
+      "X2O - Lille": "11 FEB",
+      "Exact Cross Sint-Niklaas": "17 FEB",
+      "X2O - Brussels": "18 FEB"
     },
     "cyclocross women": {
-      "Cyclocross - Superprestige Middlekerke": "10 FEB"
+      "Superprestige Middlekerke": "10 FEB",
+      "X2O - Lille": "11 FEB",
+      "Exact Cross Sint-Niklaas": "17 FEB",
+      "X2O - Brussels": "18 FEB"
     },
     "road men": {
       "Figueira Champions Classic": "10 FEB",
-      "Vuelta A Murcia": "10 FEB"
+      "Vuelta A Murcia": "10 FEB",
+      "Clasica Almeria": "11 FEB",
+      "Jaen Paraiso Interior": "12 FEB",
+      "Tour of Andalusia": "14 FEB - 18 FEB",
+      "Volta Algarve": "15 FEB - 19 FEB",
+      "Tour des Alpes Maritimes et du Var": "17 FEB - 18 FEB",
+      "UAE Tour": "19 FEB - 25 FEB",
+      "Vuelta a Galicia": "23 FEB - 26 FEB",
+      "Faun Ardèche Classic": "25 FEB",
+      "Faun Drôme Classic": "26 FEB",
+      "Kuurne-Brussels-Kuurne": "26 FEB",
+      "Le Samyn": "28 FEB"
     },
     "road women": {
-      "UAE Tour Women":"08 FEB - 11 FEB"
+      "UAE Tour Women":"08 FEB - 11 FEB",
+      "Le Samyn": "28 FEB"
     }
   }
 }
