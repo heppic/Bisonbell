@@ -17,7 +17,9 @@ data class Race(
         ROAD_MENS,
         ROAD_WOMENS,
         CYCLOCROSS_MENS,
-        CYCLOCROSS_WOMENS
+        CYCLOCROSS_WOMENS,
+        MTB_MENS,
+        MTB_WOMENS
     }
 
     enum class Platform {
@@ -40,9 +42,11 @@ data class Race(
         fun toString(discipline: Discipline): String {
             return when (discipline) {
                 Race.Discipline.CYCLOCROSS_MENS -> "Cyclocross (M)"
-                Race.Discipline.CYCLOCROSS_MENS -> "Cyclocross (W)"
+                Race.Discipline.CYCLOCROSS_WOMENS -> "Cyclocross (W)"
                 Race.Discipline.ROAD_MENS -> "Road (M)"
-                Race.Discipline.ROAD_WOMENS -> "Road(W)"
+                Race.Discipline.ROAD_WOMENS -> "Road (W)"
+                Race.Discipline.MTB_MENS -> "MTB (M)"
+                Race.Discipline.MTB_WOMENS -> "MTB (W)"
                 else -> "Unknown"
             }
         }
@@ -72,12 +76,8 @@ data class Race(
         fun fromStringData(platform: String, discipline: String, name: String, dates: String): Race {
             var firstDay: Instant;
             var lastDay: Instant;
-            Log.v("WORM", "fromStringData")
-            Log.v("WORM", platform+" "+discipline+" "+name+" "+dates)
             if (dates.contains('-')) {
                 val tokens = dates.trim().split('-')
-                Log.v("WORM",tokens[0])
-                Log.v("WORM",tokens[1])
                 val firstTokens = tokens[0].trim().split(' ')
                 val secondTokens = tokens[1].trim().split(' ')
                 firstDay = toInstant(
@@ -93,8 +93,6 @@ data class Race(
 
             } else {
                 val tokens = dates.trim().split(' ')
-                Log.v("WORM",tokens[0])
-                Log.v("WORM",tokens[1])
                 firstDay = toInstant(
                     Calendar.getInstance().get(Calendar.YEAR),
                     toMonth(tokens[1].trim()),
@@ -127,8 +125,6 @@ data class Race(
             val regex = Regex("""(\d\d?)\s([A-Za-z]{3})(?:\s*-\s*)?(\d\d?)?\\s?([A-Za-z]{3})?""")
             val matchResult = regex.find(dates)
 
-            Log.v("WORM", matchResult!!.groups[0]!!.value.toString())
-            Log.v("WORM", matchResult!!.groups[1]!!.value.toString())
             firstDay = toInstant(
                 Calendar.getInstance().get(Calendar.YEAR),
                 toMonth(matchResult!!.groups[1]!!.value),
@@ -150,6 +146,8 @@ data class Race(
                 "cyclocross women" -> Race.Discipline.CYCLOCROSS_WOMENS
                 "road men" -> Race.Discipline.ROAD_MENS
                 "road women" -> Race.Discipline.ROAD_WOMENS
+                "mountain bike men" -> Race.Discipline.MTB_MENS
+                "mountain bike women" -> Race.Discipline.MTB_WOMENS
                 else -> Race.Discipline.CYCLOCROSS_MENS
             }
 
