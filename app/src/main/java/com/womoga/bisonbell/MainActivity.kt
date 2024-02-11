@@ -75,14 +75,24 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun RaceApp() {
-    val races = remember { mutableStateListOf<RaceDay>() }
+    val jan = remember { mutableStateListOf<RaceDay>() }
+    val feb = remember { mutableStateListOf<RaceDay>() }
+    val mar = remember { mutableStateListOf<RaceDay>() }
+    val apr = remember { mutableStateListOf<RaceDay>() }
     runBlocking {
         launch {
             val result = withContext(Dispatchers.IO) { Datasource().fetchRaces() }
             when (result) {
                 is Result.Success<RaceYear> -> {
                     Log.v("WORM", result.data.toString())
-                    races.addAll(result.data.getRaceDays(Month.FEBRUARY))
+                    jan.clear()
+                    jan.addAll(result.data.getRaceDays(Month.JANUARY))
+                    feb.clear()
+                    feb.addAll(result.data.getRaceDays(Month.FEBRUARY))
+                    mar.clear()
+                    mar.addAll(result.data.getRaceDays(Month.MARCH))
+                    apr.clear()
+                    apr.addAll(result.data.getRaceDays(Month.APRIL))
 
                 }
 
@@ -90,9 +100,25 @@ fun RaceApp() {
             }
         }
     }
-    RaceList(
-        raceList = races
-    )
+
+    Column() {
+        Text("January")
+        RaceList(
+            raceList = jan
+        )
+        Text("February")
+        RaceList(
+            raceList = feb
+        )
+        Text("March")
+        RaceList(
+            raceList = mar
+        )
+        Text("April")
+        RaceList(
+            raceList = apr
+        )
+    }
 }
 
 @Composable

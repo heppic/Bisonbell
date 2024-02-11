@@ -19,6 +19,8 @@ class RaceYear {
                 schedule[zdt.month] = LinkedList<RaceDay>();
             }
             schedule[zdt.month]!!.add(day)
+            schedule[zdt.month]!!.sortBy {it.start }
+
         }
     }
 
