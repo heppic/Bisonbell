@@ -1,6 +1,6 @@
 {
   "discovery": {
-    "cyclocross men": {
+    "cyclocross": {
       "Superprestige Middlekerke": "10 FEB",
       "X2O - Lille": "11 FEB",
       "Exact Cross Sint-Niklaas": "17 FEB",
@@ -13,22 +13,7 @@
       "Exact Cross Essen": "9 DEC",
       "X2O - Herentals": "16 DEC",
       "Exact Cross Mol": "22 DEC",
-      "Exact Cross Loenhout": "29 DEC"      
-    },
-    "cyclocross women": {
-      "Superprestige Middlekerke": "10 FEB",
-      "X2O - Lille": "11 FEB",
-      "Exact Cross Sint-Niklaas": "17 FEB",
-      "X2O - Brussels": "18 FEB",
-      "Exact Cross Beringen": "9 OCT",
-      "Superprestige Overijse": "22 OCT",
-      "Superprestige Ruddervoorde": "28 OCT",
-      "X2O - Koppenberg": "1 NOV",
-      "X2O - Kortrijk": "25 NOV",
-      "Exact Cross Essen": "9 DEC",
-      "X2O - Herentals": "16 DEC",
-      "Exact Cross Mol": "22 DEC",
-      "Exact Cross Loenhout": "29 DEC"      
+      "Exact Cross Loenhout": "29 DEC"            
     },
     "road men": {
       "Figueira Champions Classic": "10 FEB",
@@ -108,20 +93,7 @@
       "GP de Plouay - Lorient Agglomération": "2 SEP",
       "Tour de Romandie": "5 SEP - 8 SEP"
     },
-    "mountain bike men": {
-      "World Series (Brazil)": "13 APR - 14 APR",
-      "World Series (Brazil)": "20 APR - 21 APR",
-      "World Series (Scotland)": "4 MAY - 5 MAY",
-      "World Series (Poland)": "18 MAY - 19 MAY",
-      "World Series (Czech Republic)": "25 MAY - 26 MAY",
-      "World Series (Austria)": "8 JUN - 9 JUN",
-      "World Series (Italy)": "15 JUN - 16 JUN",
-      "World Series (Switzerland)": "22 JUN - 23 JUN",
-      "World Series (Haute Savoie": "6 JUL - 7 JUL",
-      "World Series (France)": "7 SEP - 8 SEP",
-      "World Series (Canada)": "5 OCT - 6 OCT"
-    },
-    "mountain bike women": {
+    "mountain bike": {
       "World Series (Brazil)": "13 APR - 14 APR",
       "World Series (Brazil)": "20 APR - 21 APR",
       "World Series (Scotland)": "4 MAY - 5 MAY",
@@ -134,5 +106,21 @@
       "World Series (France)": "7 SEP - 8 SEP",
       "World Series (Canada)": "5 OCT - 6 OCT"
     }
+  },
+  "peacock": {
+    "bmx": {
+      "World Cup Round 1 & 2 (New Zealand)": "10 FEB - 11 FEB",
+      "World Cup Round 3 & 4 (Australia)": "24 FEB - 25 FEB",
+      "World Cup Round 5 & 6 (Oklahoma)": "27 FEB - 28 FEB"
+    },
+    "road men": {
+      "Paris-Nice": "3 MAR - 10 MAR",
+      "Volta a Catalunya": "18 MAR - 24 MAR",
+      "Paris-Roubaix": "7 APR"
+    },
+    "road women": {
+      "Paris-Roubaix": "6 APR" 
+    }
   }
+
 }

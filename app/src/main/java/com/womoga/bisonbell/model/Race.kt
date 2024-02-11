@@ -16,10 +16,9 @@ data class Race(
     enum class Discipline {
         ROAD_MENS,
         ROAD_WOMENS,
-        CYCLOCROSS_MENS,
-        CYCLOCROSS_WOMENS,
-        MTB_MENS,
-        MTB_WOMENS
+        CYCLOCROSS,
+        MTB,
+        BMX
     }
 
     enum class Platform {
@@ -41,12 +40,11 @@ data class Race(
     companion object {
         fun toString(discipline: Discipline): String {
             return when (discipline) {
-                Race.Discipline.CYCLOCROSS_MENS -> "Cyclocross (M)"
-                Race.Discipline.CYCLOCROSS_WOMENS -> "Cyclocross (W)"
+                Race.Discipline.CYCLOCROSS -> "Cyclocross"
                 Race.Discipline.ROAD_MENS -> "Road (M)"
                 Race.Discipline.ROAD_WOMENS -> "Road (W)"
-                Race.Discipline.MTB_MENS -> "MTB (M)"
-                Race.Discipline.MTB_WOMENS -> "MTB (W)"
+                Race.Discipline.MTB -> "MTB"
+                Race.Discipline.BMX -> "BMX"
                 else -> "Unknown"
             }
         }
@@ -102,11 +100,12 @@ data class Race(
             }
 
             val disciplineEnum = when(discipline.lowercase()) {
-                "cyclocross men" -> Race.Discipline.CYCLOCROSS_MENS
-                "cyclocross women" -> Race.Discipline.CYCLOCROSS_WOMENS
+                "cyclocross" -> Race.Discipline.CYCLOCROSS
                 "road men" -> Race.Discipline.ROAD_MENS
                 "road women" -> Race.Discipline.ROAD_WOMENS
-                else -> Race.Discipline.CYCLOCROSS_MENS
+                "mountain bike" -> Race.Discipline.MTB
+                "bmx" -> Race.Discipline.BMX
+                else -> Race.Discipline.CYCLOCROSS
             }
 
             val platformEnum = when (platform.lowercase()) {
@@ -142,13 +141,12 @@ data class Race(
             }
 
             val discipline_enum = when(discipline.lowercase()) {
-                "cyclocross men" -> Race.Discipline.CYCLOCROSS_MENS
-                "cyclocross women" -> Race.Discipline.CYCLOCROSS_WOMENS
+                "cyclocross" -> Race.Discipline.CYCLOCROSS
                 "road men" -> Race.Discipline.ROAD_MENS
                 "road women" -> Race.Discipline.ROAD_WOMENS
-                "mountain bike men" -> Race.Discipline.MTB_MENS
-                "mountain bike women" -> Race.Discipline.MTB_WOMENS
-                else -> Race.Discipline.CYCLOCROSS_MENS
+                "mountain bike" -> Race.Discipline.MTB
+                "bmx" -> Race.Discipline.BMX
+                else -> Race.Discipline.CYCLOCROSS
             }
 
             val platform_enum = when (platform.lowercase()) {
