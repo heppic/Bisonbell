@@ -1,5 +1,6 @@
 package com.womoga.bisonbell
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.os.Bundle
 import android.util.Log
@@ -21,9 +22,25 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -32,6 +49,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -78,9 +96,10 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RaceApp(modifier: Modifier) {
-    val schedule = remember { mutableStateListOf<RaceMonth>()}
+    val schedule = remember { mutableStateListOf<RaceMonth>() }
     runBlocking {
         launch {
             val result = withContext(Dispatchers.IO) { Datasource().fetchRaces() }
@@ -106,10 +125,67 @@ fun RaceApp(modifier: Modifier) {
         }
     }
 
-    LazyColumn(
-        modifier = modifier) {
-        items(items = schedule) { month ->
-            RaceList(month.name, month.days)
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    Scaffold(
+        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text("Filter") },
+                icon = { Icon(Icons.Filled.Menu, contentDescription = "") },
+                onClick = {
+                    showBottomSheet = true
+                }
+            )
+        }
+    ) { innerPadding ->
+        Column {
+            // Screen content
+            LazyColumn(
+                modifier = modifier
+                    .padding(innerPadding)
+            ) {
+                items(items = schedule) { month ->
+                    RaceList(month.name, month.days)
+                }
+            }
+
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        showBottomSheet = false
+                    },
+                    sheetState = sheetState
+                ) {
+                    Row() {
+                        // Sheet content
+                        Column()
+                        {
+                            Race.disciplineStrings().forEach { str ->
+                                Row {
+                                    Checkbox(
+                                        checked = false,
+                                        onCheckedChange = {}
+                                    )
+                                    Text(str)
+                                }
+                            }
+                            Button(onClick = {
+                                scope.launch { sheetState.hide() }.invokeOnCompletion {
+                                    if (!sheetState.isVisible) {
+                                        showBottomSheet = false
+                                    }
+                                }
+                            }) {
+                                Text("Hide bottom sheet")
+                            }
+                        }
+
+                    }
+                }
+            }
         }
     }
 }
@@ -153,8 +229,8 @@ fun LeftColumn(race: RaceDay, modifier: Modifier = Modifier){
 
 @Composable
 fun CenterColumn(race: RaceDay, modifier: Modifier = Modifier) {
-    var platform = (race.platform.map {Race.toString(it)}).joinToString(" ")
-
+    var platform = (race.platform.map {Race.platformString(it)}).joinToString(" ")
+    var checked by remember { mutableStateOf(false)}
     Column(
         modifier = modifier
             .fillMaxHeight(1.0f)
@@ -169,7 +245,7 @@ fun CenterColumn(race: RaceDay, modifier: Modifier = Modifier) {
             modifier = modifier
         ) {
             Text(
-                text = Race.toString(race.discipline),
+                text = Race.disciplineString(race.discipline),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = modifier
                     .fillMaxWidth()
@@ -188,6 +264,21 @@ fun CenterColumn(race: RaceDay, modifier: Modifier = Modifier) {
                 modifier = modifier
                     .fillMaxWidth()
                     .weight(1.0f, true)
+            )
+            Switch(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .weight(1.0f, true),
+                checked = checked,
+                onCheckedChange = {
+                    checked = it
+                },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colorScheme.primary,
+                    checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                    uncheckedThumbColor = MaterialTheme.colorScheme.secondary,
+                    uncheckedTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+                )
             )
         }
     }
@@ -211,6 +302,7 @@ fun RightColumn(modifier: Modifier = Modifier){
 fun RaceCard(race: RaceDay, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(2.dp, 0.dp)
+
     ) {
         Row(
             modifier = modifier
@@ -223,43 +315,6 @@ fun RaceCard(race: RaceDay, modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.padding(0.dp, 4.dp))
     }
 }
-/*    Column(modifier = modifier
-        .background(Color.Magenta)
-        .fillMaxWidth(0.8f)) {
-        Row (
-            modifier = modifier
-                .background(Color.Green)
-                .fillMaxWidth(0.5f)
-        ) {
-            Text(
-                text = race.name,
-                color = Color.Red,
-                modifier = modifier.padding(2.dp),
-                style = MaterialTheme.typography.bodyMedium
-
-            )
-        }
-        Row(
-            modifier = modifier
-                .background(Color.Cyan)
-                .fillMaxWidth(1.0f)
-        )
-        {
-            Text(
-                text = "Col2",
-                color = Color.Red,
-                modifier = modifier.padding(0.dp),
-                style = MaterialTheme.typography.displayMedium
-            )
-            Text(
-                text = "Col2",
-                color = Color.Red,
-                modifier = modifier.padding(0.dp),
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-    }
-}*/
 
 
 

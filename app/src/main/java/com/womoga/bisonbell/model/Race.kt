@@ -38,7 +38,7 @@ data class Race(
     }
 
     companion object {
-        fun toString(discipline: Discipline): String {
+        fun disciplineString(discipline: Discipline): String {
             return when (discipline) {
                 Race.Discipline.CYCLOCROSS -> "Cyclocross"
                 Race.Discipline.ROAD_MENS -> "Road (M)"
@@ -49,6 +49,9 @@ data class Race(
             }
         }
 
+        fun disciplineStrings(): List<String> {
+            return Race.Discipline.entries.toList().map { disciplineString(it) }
+        }
         private fun toInstant(year: Int, month: Int, day: Int): Instant {
             val c1: Calendar = Calendar.getInstance();
             c1.set(year, month-1, day);
@@ -158,12 +161,16 @@ data class Race(
             return Race(discipline_enum, name, firstDay, lastDay, listOf(platform_enum))
         }
 
-        fun toString(platform: Platform): String {
+        fun platformString(platform: Platform): String {
             return when (platform) {
                 Race.Platform.Discovery -> "D"
                 Race.Platform.Peacock -> "P"
                 else -> "Unknown"
             }
+        }
+
+        fun platformStrings(): List<String> {
+            return Race.Platform.entries.toList().map { platformString(it) }
         }
     }
 }
