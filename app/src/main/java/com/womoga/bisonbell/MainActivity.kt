@@ -106,18 +106,90 @@ fun RaceApp(modifier: Modifier) {
             when (result) {
                 is Result.Success<RaceYear> -> {
                     schedule.clear()
-                    schedule.add(RaceMonth("January", result.data.getRaceDays(Month.JANUARY)))
-                    schedule.add(RaceMonth("February", result.data.getRaceDays(Month.FEBRUARY)))
-                    schedule.add(RaceMonth("March", result.data.getRaceDays(Month.MARCH)))
-                    schedule.add(RaceMonth("April", result.data.getRaceDays(Month.APRIL)))
-                    schedule.add(RaceMonth("May", result.data.getRaceDays(Month.MAY)))
-                    schedule.add(RaceMonth("June", result.data.getRaceDays(Month.JUNE)))
-                    schedule.add(RaceMonth("July", result.data.getRaceDays(Month.JULY)))
-                    schedule.add(RaceMonth("August", result.data.getRaceDays(Month.AUGUST)))
-                    schedule.add(RaceMonth("September", result.data.getRaceDays(Month.SEPTEMBER)))
-                    schedule.add(RaceMonth("October", result.data.getRaceDays(Month.OCTOBER)))
-                    schedule.add(RaceMonth("November", result.data.getRaceDays(Month.NOVEMBER)))
-                    schedule.add(RaceMonth("December", result.data.getRaceDays(Month.DECEMBER)))
+                    val now = LocalDateTime.now()
+                    val after = LocalDateTime.of(now.year, now.monthValue, now.dayOfMonth, 0, 0).toInstant(
+                        ZoneOffset.UTC)
+                    if (now.monthValue <= 1) {
+                        schedule.add(
+                            RaceMonth(
+                                "January",
+                                result.data.getRaceDays(Month.JANUARY, after)
+                            )
+                        )
+                    }
+                    if (now.monthValue <= 2) {
+                        schedule.add(
+                            RaceMonth(
+                                "February",
+                                result.data.getRaceDays(Month.FEBRUARY, after)
+                            )
+                        )
+                    }
+                    if (now.monthValue <= 3) {
+                        schedule.add(
+                            RaceMonth(
+                                "March",
+                                result.data.getRaceDays(Month.MARCH, after)
+                            )
+                        )
+                    }
+                    if (now.monthValue <= 4) {
+                        schedule.add(
+                            RaceMonth(
+                                "April",
+                                result.data.getRaceDays(Month.APRIL, after)
+                            )
+                        )
+                    }
+                    if (now.monthValue <= 5) {
+                        schedule.add(RaceMonth("May", result.data.getRaceDays(Month.MAY, after)))
+                    }
+                    if (now.monthValue <= 6) {
+                        schedule.add(RaceMonth("June", result.data.getRaceDays(Month.JUNE, after)))
+                    }
+                    if (now.monthValue <= 7) {
+                        schedule.add(RaceMonth("July", result.data.getRaceDays(Month.JULY, after)))
+                    }
+                    if (now.monthValue <= 8) {
+                        schedule.add(
+                            RaceMonth(
+                                "August",
+                                result.data.getRaceDays(Month.AUGUST, after)
+                            )
+                        )
+                    }
+                    if (now.monthValue <= 9) {
+                        schedule.add(
+                            RaceMonth(
+                                "September",
+                                result.data.getRaceDays(Month.SEPTEMBER, after)
+                            )
+                        )
+                    }
+                    if (now.monthValue <= 10) {
+                        schedule.add(
+                            RaceMonth(
+                                "October",
+                                result.data.getRaceDays(Month.OCTOBER, after)
+                            )
+                        )
+                    }
+                    if (now.monthValue <= 11) {
+                        schedule.add(
+                            RaceMonth(
+                                "November",
+                                result.data.getRaceDays(Month.NOVEMBER, after)
+                            )
+                        )
+                    }
+                    if (now.monthValue <= 12) {
+                        schedule.add(
+                            RaceMonth(
+                                "December",
+                                result.data.getRaceDays(Month.DECEMBER, after)
+                            )
+                        )
+                    }
                 }
 
                 else -> {}
@@ -132,13 +204,13 @@ fun RaceApp(modifier: Modifier) {
     Scaffold(
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
-            ExtendedFloatingActionButton(
+/*            ExtendedFloatingActionButton(
                 text = { Text("Filter") },
                 icon = { Icon(Icons.Filled.Menu, contentDescription = "") },
                 onClick = {
                     showBottomSheet = true
                 }
-            )
+            )*/
         }
     ) { innerPadding ->
         Column {
@@ -265,7 +337,7 @@ fun CenterColumn(race: RaceDay, modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .weight(1.0f, true)
             )
-            Switch(
+/*            Switch(
                 modifier = modifier
                     .fillMaxWidth()
                     .weight(1.0f, true),
@@ -279,7 +351,7 @@ fun CenterColumn(race: RaceDay, modifier: Modifier = Modifier) {
                     uncheckedThumbColor = MaterialTheme.colorScheme.secondary,
                     uncheckedTrackColor = MaterialTheme.colorScheme.secondaryContainer,
                 )
-            )
+            )*/
         }
     }
 }

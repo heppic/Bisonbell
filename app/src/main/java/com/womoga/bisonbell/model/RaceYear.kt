@@ -1,6 +1,7 @@
 package com.womoga.bisonbell.model
 
 import android.util.Log
+import java.time.Instant
 import java.time.Month
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -29,8 +30,8 @@ class RaceYear {
         }
     }
 
-    fun getRaceDays(month: Month) : List<RaceDay> {
-        return schedule.getOrDefault(month, LinkedList<RaceDay>().toList())
+    fun getRaceDays(month: Month, after: Instant = Instant.now()) : List<RaceDay> {
+        return schedule.getOrDefault(month, LinkedList<RaceDay>().toList()).filter{ s -> s.start.isAfter(after)}
     }
 
     override fun toString(): String {
